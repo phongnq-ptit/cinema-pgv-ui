@@ -2,7 +2,7 @@ import {Navigate} from 'react-router-dom';
 import Login from './main/components/common/Login';
 import Register from './main/components/common/Register';
 import MainLayout from './main/layout/MainLayout';
-import LandingPage from './main/components/common/LandingPage';
+import LandingPage from './main/components/common/landingPage/LandingPage';
 import DashboardLayout from './main/layout/DashboardLayout';
 
 const routes = [
