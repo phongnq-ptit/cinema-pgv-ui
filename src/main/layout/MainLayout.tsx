@@ -3,10 +3,9 @@ import {Outlet} from 'react-router-dom';
 
 const MainLayout = () => {
   return (
-    <div>
-      day la main layout
+    <React.Fragment>
       <Outlet />
-    </div>
+    </React.Fragment>
   );
 };
 
