@@ -33,9 +33,6 @@ const Login = () => {
       .then((response) => {
         localStorage.setItem('login', JSON.stringify(response.data));
         successSnackbar('Login successful!!');
-        setAccessToken(response.data.accessToken);
-        setRefreshToken(response.data.refreshToken);
-        setLoginUser(response.data.user);
 
         const nextPath = getPathRoute(response.data.user.role);
 
@@ -55,11 +52,11 @@ const Login = () => {
   const getPathRoute = (role: UserRole) => {
     switch (role) {
       case UserRole.CLIENT:
-        return '/client';
+        return '/client/home';
       case UserRole.ADMIN:
-        return '/admin';
+        return '/admin/manage-user';
       case UserRole.BRANCH:
-        return '/branch';
+        return '/branch/movies';
       case UserRole.STAFF:
         return '/staff';
       default:
