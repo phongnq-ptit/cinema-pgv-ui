@@ -3,13 +3,13 @@ import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage';
 
 const useFirebase = () => {
   const firebaseConfig = {
-    apiKey: 'AIzaSyBFUvklnq1lfqOHVRhytr7OfyslZW6hRhE',
-    authDomain: 'cinema-pgv-store.firebaseapp.com',
-    projectId: 'cinema-pgv-store',
-    storageBucket: 'cinema-pgv-store.appspot.com',
-    messagingSenderId: '246105847419',
-    appId: '1:246105847419:web:cc5682d180d8b765c654de',
-    measurementId: 'G-5D2SVRQJRC',
+    apiKey: '<PRIVATE>',
+    authDomain: '<PRIVATE>',
+    projectId: '<PRIVATE>',
+    storageBucket: '<PRIVATE>',
+    messagingSenderId: '<PRIVATE>',
+    appId: '<PRIVATE>',
+    measurementId: '<PRIVATE>',
   };
 
   const app = initializeApp(firebaseConfig);
