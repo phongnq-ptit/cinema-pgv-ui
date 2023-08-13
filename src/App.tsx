@@ -23,13 +23,15 @@ function App() {
       setAccessToken(_loginObj.accessToken);
       setRefreshToken(_loginObj.refreshToken);
     }
+    // eslint-disable-next-line
   }, [loginObj]);
 
   useEffect(() => {
     if (LoginUser) {
       router();
     }
-  }, [location.pathname]);
+    // eslint-disable-next-line
+  }, [location.pathname, loginObj]);
 
   function router() {
     switch (LoginUser.role) {

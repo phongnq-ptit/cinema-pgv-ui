@@ -11,19 +11,16 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import LogoDevIcon from '@mui/icons-material/LogoDev';
 import {Link} from 'react-router-dom';
 import {Controller, useForm} from 'react-hook-form';
-import {AuthContext} from '../../hooks/contexts/AuthContext';
 import {useAuthApi} from '../../hooks/apis/useAuthApi';
 import {errorSnackbar, successSnackbar} from '../../utils/showSnackbar';
 import {UserRole} from '../../models/enums/UserRole';
 
 const Login = () => {
   const {handleSubmit, control} = useForm();
-  const {setAccessToken, setRefreshToken, setLoginUser} =
-    useContext(AuthContext);
   const {login} = useAuthApi();
   const [err, setErr] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
