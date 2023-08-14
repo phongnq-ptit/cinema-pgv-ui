@@ -20,9 +20,16 @@ export const AuthContext = createContext<IAuthContext>({
 });
 
 export const AuthContextProvider = ({children}: {children: ReactNode}) => {
-  const [accessToken, setAccessToken] = useState<string>('');
-  const [refreshToken, setRefreshToken] = useState<string>('');
-  const [LoginUser, setLoginUser] = useState<User>({} as User);
+  const loginObj = localStorage.getItem('login');
+  const [accessToken, setAccessToken] = useState<string>(
+    loginObj ? JSON.parse(loginObj).accessToken : ''
+  );
+  const [refreshToken, setRefreshToken] = useState<string>(
+    loginObj ? JSON.parse(loginObj).refreshToken : ''
+  );
+  const [LoginUser, setLoginUser] = useState<User>(
+    loginObj ? JSON.parse(loginObj).user : ({} as User)
+  );
 
   return (
     <AuthContext.Provider
