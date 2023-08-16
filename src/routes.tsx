@@ -8,7 +8,8 @@ import AttentionVerifyAccount from './main/components/common/attentionPage/Atten
 import VerifyAccount from './main/components/common/VerifyAccount';
 import AttentionVerifySuccessful from './main/components/common/attentionPage/AttentionVerifySuccessful';
 import Home from './main/screens/client/Home';
-import ManageMovies from './main/screens/admin/ManageMovies';
+import ManageMovies from './main/screens/admin/manage_movies/ManageMovies';
+import CreateMovie from './main/screens/admin/manage_movies/CreateMovie';
 
 const routes = [
   {
@@ -30,6 +31,7 @@ const routes = [
       {path: 'manage-user', element: <Login />},
       {path: 'manage-branch', element: <Login />},
       {path: 'movies', element: <ManageMovies />},
+      {path: 'movies/create', element: <CreateMovie />},
       {path: 'categories', element: <Login />},
       {path: 'profile', element: <Login />},
       {path: '404', element: <>404</>},

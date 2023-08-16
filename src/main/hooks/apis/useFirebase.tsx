@@ -1,5 +1,8 @@
 import {initializeApp} from 'firebase/app';
 import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage';
+import {StorageLocation} from '../../models/enums/StorageLocation';
+import {File as FileApi} from '../../models/File';
+import {FileType} from '../../models/enums/FileType';
 
 const useFirebase = () => {
   const firebaseConfig = {
@@ -16,17 +19,36 @@ const useFirebase = () => {
   const storage = getStorage(app);
 
   const uploadSingleFile = async (
-    folder: string,
+    folder: StorageLocation,
     file: File,
-    callback?: Function
-  ) => {
+    type: FileType
+  ): Promise<FileApi> => {
     const imageRef = ref(storage, `${folder}/${file.name}`);
-
-    await uploadBytes(imageRef, file).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((url) => {
-        callback && callback(url);
+    return new Promise((resolve, reject) => {
+      uploadBytes(imageRef, file).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          resolve({
+            fileName: file.name,
+            size: file.size,
+            type: type,
+            url: url,
+          } as FileApi);
+        });
       });
     });
+  };
+
+  const uploadMultiFiles = async (
+    folder: StorageLocation,
+    files: File[],
+    type: FileType
+  ) => {
+    const promises: Promise<FileApi>[] = [];
+    for (const file of files) {
+      promises.push(uploadSingleFile(folder, file, type));
+    }
+
+    return Promise.all(promises);
   };
 
   const downloadFile = async (url: string, fileName: string) => {
@@ -43,7 +65,7 @@ const useFirebase = () => {
       });
   };
 
-  return {uploadSingleFile, downloadFile};
+  return {uploadSingleFile, uploadMultiFiles, downloadFile};
 };
 
 export default useFirebase;
