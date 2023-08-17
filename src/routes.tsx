@@ -10,6 +10,7 @@ import AttentionVerifySuccessful from './main/components/common/attentionPage/At
 import Home from './main/screens/client/Home';
 import ManageMovies from './main/screens/admin/manage_movies/ManageMovies';
 import CreateMovie from './main/screens/admin/manage_movies/CreateMovie';
+import SelectMovies from './main/screens/branch/select_movies/SelectMovies';
 
 const routes = [
   {
@@ -28,12 +29,12 @@ const routes = [
     path: '/admin',
     element: <DashboardLayout />,
     children: [
-      {path: 'manage-user', element: <Login />},
-      {path: 'manage-branch', element: <Login />},
+      {path: 'manage-user', element: <ManageMovies />},
+      {path: 'manage-branch', element: <ManageMovies />},
       {path: 'movies', element: <ManageMovies />},
       {path: 'movies/create', element: <CreateMovie />},
-      {path: 'categories', element: <Login />},
-      {path: 'profile', element: <Login />},
+      {path: 'categories', element: <ManageMovies />},
+      {path: 'profile', element: <ManageMovies />},
       {path: '404', element: <>404</>},
       {path: '', element: <Navigate to="/404" />},
       {path: '*', element: <Navigate to="/404" />},
@@ -54,8 +55,8 @@ const routes = [
     path: '/branch',
     element: <DashboardLayout />,
     children: [
-      {path: 'movies', element: <Login />},
-      {path: 'movies-public', element: <Login />},
+      {path: 'movies', element: <SelectMovies />},
+      {path: 'public-movies', element: <Login />},
       {path: 'profile', element: <Login />},
       {path: '404', element: <>404</>},
       {path: '', element: <Navigate to="/404" />},

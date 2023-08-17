@@ -93,7 +93,7 @@ const Navbar = () => {
       title: 'Chọn phim phát hành',
     },
     {
-      href: '/branch/movies-public',
+      href: '/branch/public-movies/',
       icon: <LiveTvIcon />,
       title: 'Quản lý phim',
     },

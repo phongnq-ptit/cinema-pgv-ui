@@ -105,8 +105,8 @@ const MovieTable = ({props}: {props: BaseProps}) => {
                         .map((category) => category.name)
                         .join(', ')}
                     </TableCell>
-                    <TableCell>
-                      <Button>Sửa</Button>
+                    <TableCell align="center">
+                      <Button variant="outlined">Sửa</Button>
                     </TableCell>
                   </TableRow>
                 );
