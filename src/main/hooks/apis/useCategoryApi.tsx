@@ -1,4 +1,3 @@
-import React from 'react';
 import useApi from './useApi';
 import {ApiResponse} from '../../models/base';
 import {Category} from '../../models/Category';

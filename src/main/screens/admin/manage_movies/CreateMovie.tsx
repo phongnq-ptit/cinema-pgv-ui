@@ -34,7 +34,15 @@ const CreateMovie = () => {
   const [images, setImages] = useState<Array<File>>([]);
   const [video, setVideo] = useState<File[]>([]);
 
-  const save = (data: any) => {
+  const save = () => {
+    if (
+      newMovie.name === '' ||
+      newMovie.duration === 0 ||
+      newMovie.author === ''
+    ) {
+      warningSnackbar(`Các input không được để trống!`);
+      return;
+    }
     if (images.length === 0 || video.length === 0) {
       warningSnackbar(
         'Phải tải ít nhất một ảnh của phim và không được thiếu file video!'
@@ -53,31 +61,22 @@ const CreateMovie = () => {
       warningSnackbar('Phải chọn ít nhất 1 thể loại!');
       return;
     }
-    if (data.duration < 0) {
+    if (newMovie.duration < 0) {
       warningSnackbar('Thời lượng phim không được để số âm!');
       return;
     }
 
     setLoadingPage(true);
-    setNewMovie((prev) => ({...prev, ...data}));
     uploadSingleFile(StorageLocation.VIDEO, video[0], FileType.VIDEO)
       .then((_video) => {
         uploadMultiFiles(StorageLocation.IMAGE, images, FileType.IMAGE).then(
           (_images) => {
-            console.log('_images', {
-              ...newMovie,
-              movieFile: _video,
-              images: _images,
-            });
-
             addNewMovie({
               ...newMovie,
               movieFile: _video,
               images: _images,
             })
               .then((response) => {
-                console.log('movie', newMovie);
-
                 successSnackbar(`Thêm phim ${newMovie.name} thành công`);
               })
               .catch((e) => errorSnackbar(e));
@@ -132,7 +131,7 @@ const CreateMovie = () => {
           </Grid>
         </EditMovie.Slot>
         <EditMovie.Slot name="action">
-          <Button type="submit" variant="contained">
+          <Button onClick={save} variant="contained">
             Thêm phim mới
           </Button>
         </EditMovie.Slot>

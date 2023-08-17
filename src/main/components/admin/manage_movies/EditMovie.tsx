@@ -5,7 +5,6 @@ import {Movie} from '../../../models/Movie';
 import {Autocomplete, Box, Checkbox, Grid, TextField} from '@mui/material';
 import useCategoryApi from '../../../hooks/apis/useCategoryApi';
 import {Category} from '../../../models/Category';
-import {Controller, useForm} from 'react-hook-form';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import {DatePicker, LocalizationProvider} from '@mui/x-date-pickers';
@@ -15,7 +14,6 @@ import dayjs from 'dayjs';
 interface BaseProps {
   movie: Movie;
   setMovie: Function;
-  save: Function;
 }
 
 const EditMovie = ({
@@ -25,8 +23,7 @@ const EditMovie = ({
   children: ReactNode;
   props: BaseProps;
 }) => {
-  const {movie, setMovie, save: submit} = props;
-  const {handleSubmit, control} = useForm();
+  const {movie, setMovie} = props;
   const {getListCategories} = useCategoryApi();
   const [categories, setCategories] = useState<Array<Category>>([]);
 
@@ -36,10 +33,6 @@ const EditMovie = ({
     });
     // eslint-disable-next-line
   }, []);
-
-  function save(data: any) {
-    submit(data);
-  }
 
   const TitleTemplate = useSlot({
     children,
@@ -66,29 +59,20 @@ const EditMovie = ({
           <TitleTemplate />
         </Grid>
       </Grid>
-      <Box component="form" noValidate onSubmit={handleSubmit(save)}>
+      <Box component="form" noValidate>
         <Grid container spacing={2} alignItems="center">
           <FileTemplate />
           <Grid item xs={6}>
-            <Controller
-              name="name"
-              control={control}
-              render={({field: {onChange, value}, fieldState: {error}}) => (
-                <TextField
-                  required
-                  margin="normal"
-                  label="Tên phim"
-                  variant="outlined"
-                  value={value}
-                  onChange={onChange}
-                  error={!!error}
-                  helperText={error ? error.message : null}
-                  fullWidth
-                />
-              )}
-              rules={{
-                required: 'Không được để trống!',
-              }}
+            <TextField
+              required
+              margin="normal"
+              label="Tên phim"
+              variant="outlined"
+              value={movie.name}
+              onChange={(event) =>
+                setMovie({...movie, name: event.target.value})
+              }
+              fullWidth
             />
           </Grid>
           <Grid item xs={6}>
@@ -119,48 +103,30 @@ const EditMovie = ({
             />
           </Grid>
           <Grid item xs={6}>
-            <Controller
-              name="duration"
-              control={control}
-              render={({field: {onChange, value}, fieldState: {error}}) => (
-                <TextField
-                  required
-                  margin="normal"
-                  label="Thời lượng (phút)"
-                  type="number"
-                  variant="outlined"
-                  value={value}
-                  onChange={onChange}
-                  error={!!error}
-                  helperText={error ? error.message : null}
-                  fullWidth
-                />
-              )}
-              rules={{
-                required: 'Không được để trống!',
-              }}
+            <TextField
+              required
+              margin="normal"
+              label="Thời lượng (phút)"
+              type="number"
+              variant="outlined"
+              value={movie.duration}
+              onChange={(event) =>
+                setMovie({...movie, duration: event.target.value})
+              }
+              fullWidth
             />
           </Grid>
           <Grid item xs={6}>
-            <Controller
-              name="author"
-              control={control}
-              render={({field: {onChange, value}, fieldState: {error}}) => (
-                <TextField
-                  required
-                  margin="normal"
-                  label="Tác giả"
-                  variant="outlined"
-                  value={value}
-                  onChange={onChange}
-                  error={!!error}
-                  helperText={error ? error.message : null}
-                  fullWidth
-                />
-              )}
-              rules={{
-                required: 'Không được để trống!',
-              }}
+            <TextField
+              required
+              margin="normal"
+              label="Tác giả"
+              variant="outlined"
+              value={movie.author}
+              onChange={(event) =>
+                setMovie({...movie, author: event.target.value})
+              }
+              fullWidth
             />
           </Grid>
           <Grid item xs={6}>

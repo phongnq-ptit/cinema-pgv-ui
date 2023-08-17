@@ -15,11 +15,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import {useNavigate} from 'react-router-dom';
-import {makeStyles} from '@mui/styles';
-
-const useStyles = makeStyles({
-  root: {},
-});
 
 function Copyright() {
   return (
@@ -37,7 +32,6 @@ function Copyright() {
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export default function LandingPage() {
-  const classes = useStyles();
   const navigate = useNavigate();
 
   const onClickAction = (path: string) => {
