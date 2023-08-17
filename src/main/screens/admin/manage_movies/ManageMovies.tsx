@@ -1,8 +1,9 @@
 import {Box, Fab, Tooltip} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from '@mui/styles';
 import {green} from '@mui/material/colors';
+import useMovieApi from '../../../hooks/apis/useMovieApi';
 
 const useStyles = makeStyles({
   root: {},
@@ -19,6 +20,15 @@ const useStyles = makeStyles({
 });
 
 const ManageMovies = () => {
+  const {getListMovies} = useMovieApi();
+
+  useEffect(() => {
+    getListMovies()
+      .then((response) => {
+        console.log('hahah', response);
+      })
+      .catch((e) => console.log(e));
+  });
   const classes = useStyles();
   return (
     <React.Fragment>

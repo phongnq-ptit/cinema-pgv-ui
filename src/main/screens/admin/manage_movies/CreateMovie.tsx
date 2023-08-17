@@ -13,8 +13,10 @@ import {
 } from '../../../utils/showSnackbar';
 import {StorageLocation} from '../../../models/enums/StorageLocation';
 import {FileType} from '../../../models/enums/FileType';
+import {useNavigate} from 'react-router-dom';
 
 const CreateMovie = () => {
+  const navigate = useNavigate();
   const {addNewMovie} = useMovieApi();
   const {uploadSingleFile, uploadMultiFiles} = useFirebase();
   const {setLoadingPage} = useContext(LoadingContext);
@@ -84,9 +86,8 @@ const CreateMovie = () => {
       })
       .finally(() => {
         setLoadingPage(false);
+        navigate('/admin/movies');
       });
-
-    console.log('save new movie');
   };
 
   return (
