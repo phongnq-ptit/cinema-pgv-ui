@@ -11,6 +11,7 @@ import Home from './main/screens/client/Home';
 import ManageMovies from './main/screens/admin/manage_movies/ManageMovies';
 import CreateMovie from './main/screens/admin/manage_movies/CreateMovie';
 import SelectMovies from './main/screens/branch/select_movies/SelectMovies';
+import ManagePublicMovie from './main/screens/branch/manage_movies/ManagePublicMovie';
 
 const routes = [
   {
@@ -56,7 +57,7 @@ const routes = [
     element: <DashboardLayout />,
     children: [
       {path: 'movies', element: <SelectMovies />},
-      {path: 'public-movies', element: <Login />},
+      {path: 'public-movies', element: <ManagePublicMovie />},
       {path: 'profile', element: <Login />},
       {path: '404', element: <>404</>},
       {path: '', element: <Navigate to="/404" />},

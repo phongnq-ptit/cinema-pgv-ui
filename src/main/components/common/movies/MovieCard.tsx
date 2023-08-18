@@ -10,17 +10,26 @@ import React, {ReactNode} from 'react';
 import {Movie} from '../../../models/Movie';
 import withSlot from '../../../hooks/wrapper/withSlots';
 import useSlot from '../../../hooks/contexts/useSlots';
-import dayjs from 'dayjs';
 
-interface Props {
+interface BaseProps {
   movie: Movie;
 }
+
+interface PartialProps {}
+
+type Props = BaseProps & Partial<PartialProps>;
 
 const MovieCard = ({props, children}: {props: Props; children: ReactNode}) => {
   const CARD_PROPERTY = {
     borderRadius: 3,
     boxShadow: 5,
   };
+
+  const ContentTemplate = useSlot({
+    children,
+    name: 'content',
+    fallback: <React.Fragment></React.Fragment>,
+  });
 
   const ActionTemplate = useSlot({
     children,
@@ -58,16 +67,7 @@ const MovieCard = ({props, children}: {props: Props; children: ReactNode}) => {
           </Box>
         </Box>
         <CardContent sx={{px: 3, mb: 0}}>
-          <Typography variant="body1" color="text.secondary" sx={{mb: 1}}>
-            Tác giả: {props.movie.author}
-          </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{mb: 1}}>
-            Thời lượng: {`${props.movie.duration} phút`}
-          </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{mb: 1}}>
-            Ngày phát hành:
-            {` ${dayjs(props.movie.releaseDate).format('DD/MM/YYYY')}`}
-          </Typography>
+          <ContentTemplate />
         </CardContent>
         <Box
           sx={{

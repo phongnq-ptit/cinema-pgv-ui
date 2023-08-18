@@ -15,14 +15,21 @@ interface BaseProps {
   setOpen: Function;
 }
 
+interface PartialProps {
+  handleCloseDialog: Function;
+}
+
+type Props = BaseProps & Partial<PartialProps>;
+
 const CustomDialog = ({
   children,
   props,
 }: {
   children: ReactNode;
-  props: BaseProps;
+  props: Props;
 }) => {
   const handleClose = () => {
+    props.handleCloseDialog && props.handleCloseDialog();
     props.setOpen(false);
   };
 
@@ -76,9 +83,11 @@ const CustomDialog = ({
           <ContentTemplate />
         </DialogContentText>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{textDecoration: 'underline'}}>
         <ActionTemplate />
-        <Button onClick={handleClose}>Trở lại</Button>
+        <Button sx={{fontWeight: 600}} onClick={handleClose}>
+          Trở lại
+        </Button>
       </DialogActions>
     </Dialog>
   );

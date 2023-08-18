@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Movie} from '../../../models/Movie';
 import MovieCard from '../../common/movies/MovieCard';
-import {Button} from '@mui/material';
-import CustomDialog from '../../common/dialog/CustomDialog';
-import CarouselImage from '../../common/CarouselImage';
+import {Button, Typography} from '@mui/material';
+import SelectMovieDialog from './SelectMovieDialog';
+import dayjs from 'dayjs';
 
 interface BaseProps {
   movie: Movie;
@@ -19,6 +19,18 @@ const MovieItem = ({props}: {props: BaseProps}) => {
   return (
     <React.Fragment>
       <MovieCard props={{movie: props.movie}}>
+        <MovieCard.Slot name="content">
+          <Typography variant="body1" color="text.secondary" sx={{mb: 1}}>
+            Tác giả: {props.movie.author}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{mb: 1}}>
+            Thời lượng: {`${props.movie.duration} phút`}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{mb: 1}}>
+            Ngày phát hành:
+            {` ${dayjs(props.movie.releaseDate).format('DD/MM/YYYY')}`}
+          </Typography>
+        </MovieCard.Slot>
         <MovieCard.Slot name="action">
           <Button
             sx={{
@@ -32,14 +44,7 @@ const MovieItem = ({props}: {props: BaseProps}) => {
           </Button>
         </MovieCard.Slot>
       </MovieCard>
-      <CustomDialog props={{open, setOpen}}>
-        <CustomDialog.Slot name="title">{props.movie.name}</CustomDialog.Slot>
-        <CustomDialog.Slot name="content">
-          <CarouselImage
-            props={{images: props.movie.images.map((item) => item.url)}}
-          />
-        </CustomDialog.Slot>
-      </CustomDialog>
+      <SelectMovieDialog props={{open, setOpen, movie: props.movie}} />
     </React.Fragment>
   );
 };
