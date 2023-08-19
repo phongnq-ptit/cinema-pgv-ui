@@ -12,6 +12,7 @@ import ManageMovies from './main/screens/admin/manage_movies/ManageMovies';
 import CreateMovie from './main/screens/admin/manage_movies/CreateMovie';
 import SelectMovies from './main/screens/branch/select_movies/SelectMovies';
 import ManagePublicMovie from './main/screens/branch/manage_movies/ManagePublicMovie';
+import ManageCategory from './main/screens/admin/manage_categories/ManageCategory';
 
 const routes = [
   {
@@ -34,7 +35,7 @@ const routes = [
       {path: 'manage-branch', element: <ManageMovies />},
       {path: 'movies', element: <ManageMovies />},
       {path: 'movies/create', element: <CreateMovie />},
-      {path: 'categories', element: <ManageMovies />},
+      {path: 'categories', element: <ManageCategory />},
       {path: 'profile', element: <ManageMovies />},
       {path: '404', element: <>404</>},
       {path: '', element: <Navigate to="/404" />},
