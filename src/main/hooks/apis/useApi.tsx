@@ -3,7 +3,7 @@ import {useContext} from 'react';
 import {AuthContext} from '../contexts/AuthContext';
 
 export default function useApi() {
-  const {accessToken} = useContext(AuthContext);
+  const {accessToken, setError} = useContext(AuthContext);
 
   async function AXIOS(): Promise<AxiosInstance> {
     let instance: AxiosInstance;
@@ -15,6 +15,7 @@ export default function useApi() {
         return response.data;
       },
       (error) => {
+        setError({open: true, content: error.response.data.msg});
         return Promise.reject(error);
       }
     );

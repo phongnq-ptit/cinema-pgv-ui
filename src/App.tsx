@@ -7,12 +7,13 @@ import {LoadingContextProvider} from './main/hooks/contexts/LoadingContext';
 import LoadingPage from './main/components/common/LoadingPage';
 import {AuthContext} from './main/hooks/contexts/AuthContext';
 import {UserRole} from './main/models/enums/UserRole';
+import ErrorDialog from './main/components/common/dialog/ErrorDialog';
 
 function App() {
   const routing = useRoutes(routes);
   const location = useLocation();
   const navigate = useNavigate();
-  const {LoginUser, setLoginUser, setAccessToken, setRefreshToken} =
+  const {LoginUser, setLoginUser, setAccessToken, setRefreshToken, error} =
     useContext(AuthContext);
   const loginObj = localStorage.getItem('login');
 
@@ -57,7 +58,8 @@ function App() {
     <LoadingContextProvider>
       {routing}
       <LoadingPage />
-      <ToastContainer />
+      {!error.open && <ToastContainer />}
+      <ErrorDialog />
     </LoadingContextProvider>
   );
 }

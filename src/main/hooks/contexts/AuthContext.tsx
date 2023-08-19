@@ -8,6 +8,8 @@ interface IAuthContext {
   setRefreshToken: Function;
   LoginUser: User;
   setLoginUser: Function;
+  error: {open: boolean; content: string};
+  setError: Function;
 }
 
 export const AuthContext = createContext<IAuthContext>({
@@ -17,6 +19,8 @@ export const AuthContext = createContext<IAuthContext>({
   setRefreshToken: (value: string) => {},
   LoginUser: {} as User,
   setLoginUser: (value: User) => {},
+  error: {open: false, content: ''},
+  setError: (error: any) => {},
 });
 
 export const AuthContextProvider = ({children}: {children: ReactNode}) => {
@@ -30,6 +34,10 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
   const [LoginUser, setLoginUser] = useState<User>(
     loginObj ? JSON.parse(loginObj).user : ({} as User)
   );
+  const [error, setError] = useState<{open: boolean; content: string}>({
+    open: false,
+    content: '',
+  });
 
   return (
     <AuthContext.Provider
@@ -40,6 +48,8 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
         setRefreshToken,
         LoginUser,
         setLoginUser,
+        error,
+        setError,
       }}
     >
       {children}
