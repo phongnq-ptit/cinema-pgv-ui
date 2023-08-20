@@ -11,13 +11,17 @@ interface MovieParams {
 }
 
 const useMovieApi = () => {
-  const {GET, POST} = useApi();
+  const {GET, POST, PATCH} = useApi();
   const baseUrl = 'api/movies';
 
   async function getListMovies(
     params?: Partial<MovieParams>
   ): Promise<ApiResponse<Array<Movie>>> {
     return GET<ApiResponse<Array<Movie>>>(baseUrl, params);
+  }
+
+  async function getMovie(uuid: string): Promise<ApiResponse<Movie>> {
+    return GET<ApiResponse<Movie>>(baseUrl + `/${uuid}`);
   }
 
   async function getListMoviePublic(
@@ -43,12 +47,21 @@ const useMovieApi = () => {
     return POST<ApiResponse<MoviePublic>>(baseUrl + '/public', moviePublic);
   }
 
+  async function updateMovie(
+    uuid: string,
+    movieUpdate: Movie
+  ): Promise<ApiResponse<Movie>> {
+    return PATCH<ApiResponse<Movie>>(baseUrl + `/${uuid}`, movieUpdate);
+  }
+
   return {
     getListMovies,
+    getMovie,
     getListMoviePublic,
     addNewMovie,
     addMoviePublic,
     changeMovieActive,
+    updateMovie,
   };
 };
 

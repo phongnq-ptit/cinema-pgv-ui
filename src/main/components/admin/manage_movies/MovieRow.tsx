@@ -2,6 +2,7 @@ import React from 'react';
 import {Movie} from '../../../models/Movie';
 import {Button, Checkbox, TableCell, TableRow} from '@mui/material';
 import dayjs from 'dayjs';
+import {useNavigate} from 'react-router-dom';
 
 interface Props {
   movie: Movie;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const MovieRow = ({props}: {props: Props}) => {
+  const navigate = useNavigate();
   const isSelected = () => props.movieSelected.includes(props.movie.uuid);
 
   const handleChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +39,7 @@ const MovieRow = ({props}: {props: Props}) => {
         </TableCell>
         <TableCell>{props.movie.name}</TableCell>
         <TableCell>{props.movie.author}</TableCell>
-        <TableCell>{props.movie.duration}</TableCell>
+        <TableCell>{`${props.movie.duration} phút`}</TableCell>
         <TableCell>
           {dayjs(props.movie.releaseDate).format('HH:mm, DD/MM/YYYY')}
         </TableCell>
@@ -45,7 +47,13 @@ const MovieRow = ({props}: {props: Props}) => {
           {props.movie.categories.map((category) => category.name).join(', ')}
         </TableCell>
         <TableCell align="center">
-          <Button variant="outlined" sx={{mx: 1}}>
+          <Button
+            variant="outlined"
+            sx={{mx: 1}}
+            onClick={() => {
+              navigate(`/admin/movies/${props.movie.uuid}`);
+            }}
+          >
             Sửa
           </Button>
         </TableCell>

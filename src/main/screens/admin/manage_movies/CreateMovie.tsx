@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Movie} from '../../../models/Movie';
 import EditMovie from '../../../components/admin/manage_movies/EditMovie';
 import {Button, Grid, Typography} from '@mui/material';
@@ -14,10 +14,13 @@ import {
 import {StorageLocation} from '../../../models/enums/StorageLocation';
 import {FileType} from '../../../models/enums/FileType';
 import {useNavigate} from 'react-router-dom';
+import {Category} from '../../../models/Category';
+import useCategoryApi from '../../../hooks/apis/useCategoryApi';
 
 const CreateMovie = () => {
   const navigate = useNavigate();
   const {addNewMovie} = useMovieApi();
+  const {getListCategories} = useCategoryApi();
   const {uploadSingleFile, uploadMultiFiles} = useFirebase();
   const {setLoadingPage} = useContext(LoadingContext);
   const [newMovie, setNewMovie] = useState<Movie>({
@@ -31,8 +34,16 @@ const CreateMovie = () => {
     movieFile: null,
     active: 1,
   });
+  const [categories, setCategories] = useState<Array<Category>>([]);
   const [images, setImages] = useState<Array<File>>([]);
   const [video, setVideo] = useState<File[]>([]);
+
+  useEffect(() => {
+    getListCategories().then((response) => {
+      setCategories(response.data);
+    });
+    // eslint-disable-next-line
+  }, []);
 
   const save = () => {
     if (
@@ -95,6 +106,7 @@ const CreateMovie = () => {
         props={{
           movie: newMovie,
           setMovie: setNewMovie,
+          categories,
           save,
         }}
       >

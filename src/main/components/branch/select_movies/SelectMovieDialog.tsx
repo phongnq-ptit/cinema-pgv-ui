@@ -51,7 +51,7 @@ const SelectMovieDialog = ({props}: {props: Props}) => {
       <CustomDialog.Slot name="title">{props.movie.name}</CustomDialog.Slot>
       <CustomDialog.Slot name="content">
         <CarouselImage
-          props={{images: props.movie.images.map((item) => item.url)}}
+          props={{images: props.movie.images!.map((item) => item.url)}}
         />
         <Grid component="form" container spacing={2} mt={2}>
           <Grid item xs={6}>

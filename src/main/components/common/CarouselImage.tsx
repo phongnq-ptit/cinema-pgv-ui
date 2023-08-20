@@ -29,6 +29,7 @@ const DefaultSettingsT: SettingsT = {
 
 interface BaseProps {
   images: Array<string>;
+  sx?: any;
 }
 
 const CarouselImage = ({props}: {props: BaseProps}) => {
@@ -41,11 +42,15 @@ const CarouselImage = ({props}: {props: BaseProps}) => {
             src={item}
             alt="..."
             loading="lazy"
-            sx={{
-              width: '100%',
-              height: '500px',
-              objectFit: 'cover',
-            }}
+            sx={
+              props.sx
+                ? props.sx
+                : {
+                    width: '100%',
+                    height: '500px',
+                    objectFit: 'cover',
+                  }
+            }
             key={index + 'abcde'}
           />
         </Box>

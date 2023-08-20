@@ -9,7 +9,7 @@ export interface Movie {
   author: string;
   releaseDate: Date;
   categories: Array<Category>;
-  images: Array<File>;
+  images: Array<File> | null;
   movieFile: File | null;
   active: number;
   createdAt?: Date;

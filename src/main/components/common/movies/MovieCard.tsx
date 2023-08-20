@@ -45,8 +45,8 @@ const MovieCard = ({props, children}: {props: Props; children: ReactNode}) => {
             component="img"
             height="250"
             image={
-              props.movie.images[
-                Math.floor(Math.random() * (props.movie.images.length - 1))
+              props.movie.images![
+                Math.floor(Math.random() * (props.movie.images!.length - 1))
               ].url
             }
             alt="..."

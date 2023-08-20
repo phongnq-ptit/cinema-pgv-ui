@@ -1,9 +1,8 @@
-import React, {ReactNode, useEffect, useState} from 'react';
+import React, {ReactNode} from 'react';
 import withSlot from '../../../hooks/wrapper/withSlots';
 import useSlot from '../../../hooks/contexts/useSlots';
 import {Movie} from '../../../models/Movie';
 import {Autocomplete, Box, Checkbox, Grid, TextField} from '@mui/material';
-import useCategoryApi from '../../../hooks/apis/useCategoryApi';
 import {Category} from '../../../models/Category';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -14,6 +13,7 @@ import dayjs from 'dayjs';
 interface BaseProps {
   movie: Movie;
   setMovie: Function;
+  categories: Array<Category>;
 }
 
 const EditMovie = ({
@@ -23,17 +23,7 @@ const EditMovie = ({
   children: ReactNode;
   props: BaseProps;
 }) => {
-  const {movie, setMovie} = props;
-  const {getListCategories} = useCategoryApi();
-  const [categories, setCategories] = useState<Array<Category>>([]);
-
-  useEffect(() => {
-    getListCategories().then((response) => {
-      setCategories(response.data);
-    });
-    // eslint-disable-next-line
-  }, []);
-
+  const {movie, setMovie, categories} = props;
   const TitleTemplate = useSlot({
     children,
     name: 'title',
@@ -86,6 +76,9 @@ const EditMovie = ({
                 setMovie({...movie, categories: newValue});
               }}
               getOptionLabel={(option) => option.name}
+              isOptionEqualToValue={(option: Category, value: Category) =>
+                option.uuid === value.uuid
+              }
               renderOption={(props, option, {selected}) => (
                 <li {...props}>
                   <Checkbox
