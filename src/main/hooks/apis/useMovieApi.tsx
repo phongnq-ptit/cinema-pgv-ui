@@ -6,18 +6,31 @@ interface MoviePublicParams {
   branchUuid: string;
 }
 
+interface MovieParams {
+  active: number;
+}
+
 const useMovieApi = () => {
   const {GET, POST} = useApi();
   const baseUrl = 'api/movies';
 
-  async function getListMovies(): Promise<ApiResponse<Array<Movie>>> {
-    return GET<ApiResponse<Array<Movie>>>(baseUrl);
+  async function getListMovies(
+    params?: Partial<MovieParams>
+  ): Promise<ApiResponse<Array<Movie>>> {
+    return GET<ApiResponse<Array<Movie>>>(baseUrl, params);
   }
 
   async function getListMoviePublic(
     params?: Partial<MoviePublicParams>
   ): Promise<ApiResponse<Array<MoviePublic>>> {
     return GET<ApiResponse<Array<MoviePublic>>>(baseUrl + '/public', params);
+  }
+
+  async function changeMovieActive(
+    movieUuid: string[],
+    active: number
+  ): Promise<ApiResponse<Movie>> {
+    return POST<ApiResponse<Movie>>(baseUrl + '/active', movieUuid, {active});
   }
 
   async function addNewMovie(newMovie: Movie): Promise<ApiResponse<Movie>> {
@@ -30,7 +43,13 @@ const useMovieApi = () => {
     return POST<ApiResponse<MoviePublic>>(baseUrl + '/public', moviePublic);
   }
 
-  return {getListMovies, getListMoviePublic, addNewMovie, addMoviePublic};
+  return {
+    getListMovies,
+    getListMoviePublic,
+    addNewMovie,
+    addMoviePublic,
+    changeMovieActive,
+  };
 };
 
 export default useMovieApi;

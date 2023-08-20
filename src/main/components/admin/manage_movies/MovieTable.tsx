@@ -1,5 +1,5 @@
 import {
-  Button,
+  Checkbox,
   Paper,
   Table,
   TableBody,
@@ -11,10 +11,14 @@ import {
 } from '@mui/material';
 import React from 'react';
 import {Movie} from '../../../models/Movie';
-import dayjs from 'dayjs';
+import MovieRow from './MovieRow';
+import _ from 'lodash';
 
 interface BaseProps {
   movies: Array<Movie>;
+  tab: number;
+  movieSelected: string[];
+  setMovieSelected: Function;
 }
 
 interface Column {
@@ -65,65 +69,78 @@ const MovieTable = ({props}: {props: BaseProps}) => {
     setPage(0);
   };
 
+  const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      props.setMovieSelected(
+        _.uniq([
+          ...props.movies
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((item) => item.uuid),
+          ...props.movieSelected,
+        ])
+      );
+    } else {
+      props.setMovieSelected([]);
+    }
+  };
+
   return (
-    <Paper sx={{width: '100%'}}>
-      <TableContainer>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{top: 5, minWidth: column.minWidth, fontWeight: 800}}
-                  color="primary"
-                >
-                  {column.label}
+    <React.Fragment>
+      <Paper sx={{width: '100%'}}>
+        <TableContainer>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    color="primary"
+                    onChange={handleSelectAll}
+                    inputProps={{
+                      'aria-label': 'select all desserts',
+                    }}
+                  />
                 </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {props.movies
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((movie) => {
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={movie.uuid}
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{top: 5, minWidth: column.minWidth, fontWeight: 800}}
+                    color="primary"
                   >
-                    <TableCell>{movie.name}</TableCell>
-                    <TableCell>{movie.author}</TableCell>
-                    <TableCell>{movie.duration}</TableCell>
-                    <TableCell>
-                      {dayjs(movie.releaseDate).format('HH:mm, DD/MM/YYYY')}
-                    </TableCell>
-                    <TableCell>
-                      {movie.categories
-                        .map((category) => category.name)
-                        .join(', ')}
-                    </TableCell>
-                    <TableCell align="center">
-                      <Button variant="outlined">Sửa</Button>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={props.movies.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {props.movies
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((movie) => {
+                  return (
+                    <MovieRow
+                      props={{
+                        movie,
+                        movieSelected: props.movieSelected,
+                        setMovieSelected: props.setMovieSelected,
+                      }}
+                      key={movie.uuid}
+                    />
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={props.movies.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+    </React.Fragment>
   );
 };
 
