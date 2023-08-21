@@ -55,6 +55,22 @@ const useMovieApi = () => {
     return PATCH<ApiResponse<Movie>>(baseUrl + `/${uuid}`, movieUpdate);
   }
 
+  async function updateMoviePublic(
+    uuid: string,
+    moviePublicUpdate: MoviePublic
+  ): Promise<ApiResponse<MoviePublic>> {
+    return PATCH<ApiResponse<MoviePublic>>(
+      baseUrl + `/public/${uuid}`,
+      moviePublicUpdate
+    );
+  }
+
+  async function removeMoviePublic(
+    uuids: string[]
+  ): Promise<ApiResponse<MoviePublic>> {
+    return POST<ApiResponse<MoviePublic>>(baseUrl + '/public/remove', uuids);
+  }
+
   return {
     getListMovies,
     getMovie,
@@ -63,6 +79,8 @@ const useMovieApi = () => {
     addMoviePublic,
     changeMovieActive,
     updateMovie,
+    updateMoviePublic,
+    removeMoviePublic,
   };
 };
 

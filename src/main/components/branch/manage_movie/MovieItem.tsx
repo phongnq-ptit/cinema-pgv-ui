@@ -1,86 +1,72 @@
 import React, {useState} from 'react';
-import MovieCard from '../../common/movies/MovieCard';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  IconButton,
-  Typography,
-} from '@mui/material';
-import DownloadIcon from '@mui/icons-material/Download';
-import {MoviePublic} from '../../../models/Movie';
+import {Button, Checkbox, TableCell, TableRow} from '@mui/material';
 import dayjs from 'dayjs';
-import useFirebase from '../../../hooks/apis/useFirebase';
+import {MoviePublic} from '../../../models/Movie';
 import {formatter} from '../../../utils/CommonUtils';
+import SelectMovieDialog from '../select_movies/SelectMovieDialog';
 
-interface BaseProps {
-  moviePublic: MoviePublic;
+interface Props {
+  movie: MoviePublic;
+  movieSelected: string[];
+  setMovieSelected: Function;
 }
 
-const MovieItem = ({props}: {props: BaseProps}) => {
-  const {downloadFile} = useFirebase();
-  const [loadingDownload, setLoadingDownload] = useState<boolean>(false);
+const MovieItem = ({props}: {props: Props}) => {
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const isSelected = () => props.movieSelected.includes(props.movie.uuid);
 
-  const handleDownload = () => {
-    const {url, fileName} = props.moviePublic.movie.movieFile!;
-    setLoadingDownload(true);
-    downloadFile(url, fileName).finally(() => setLoadingDownload(false));
+  const handleChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      props.setMovieSelected([...props.movieSelected, props.movie.uuid]);
+    } else {
+      props.setMovieSelected([
+        ...props.movieSelected.filter((item) => item !== props.movie.uuid),
+      ]);
+    }
   };
+
   return (
     <React.Fragment>
-      <MovieCard props={{movie: props.moviePublic.movie}}>
-        <MovieCard.Slot name="content">
-          <Typography variant="body1" color="text.secondary" sx={{mb: 1}}>
-            Bắt đầu:
-            {` ${dayjs(props.moviePublic.startDate).format(
-              'HH:mm, DD/MM/YYYY'
-            )}`}
-          </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{mb: 1}}>
-            Kết thúc:
-            {` ${dayjs(props.moviePublic.endDate).format('HH:mm, DD/MM/YYYY')}`}
-          </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{mb: 1}}>
-            {`Giá tiền (1 vé): ${formatter.format(props.moviePublic.price)}`}
-          </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{mb: 1}}>
-            {`Số vé (còn lại):  ${props.moviePublic.totalTickets}`}
-          </Typography>
-        </MovieCard.Slot>
-        <MovieCard.Slot name="action">
-          <Button
-            sx={{
-              textDecoration: 'underline',
-              fontWeight: 600,
-              letterSpacing: 1,
+      <TableRow hover role="checkbox" tabIndex={-1} key={props.movie.uuid}>
+        <TableCell padding="checkbox">
+          <Checkbox
+            checked={isSelected()}
+            onChange={handleChecked}
+            color="primary"
+            inputProps={{
+              'aria-label': 'select all desserts',
             }}
-            // onClick={handleClickBtn}
+          />
+        </TableCell>
+        <TableCell>{props.movie.movie.name}</TableCell>
+        <TableCell>
+          {dayjs(props.movie.startDate).format('DD/MM/YYYY')}
+        </TableCell>
+        <TableCell>{`${dayjs(props.movie.startDate).format('HH:mm')} - ${dayjs(
+          props.movie.endDate
+        ).format('HH:mm')}`}</TableCell>
+        <TableCell>{formatter.format(props.movie.price)}</TableCell>
+        <TableCell>{`${props.movie.totalTickets} vé`}</TableCell>
+        <TableCell align="center">
+          <Button
+            variant="outlined"
+            sx={{mx: 1}}
+            onClick={() => {
+              setOpenUpdate(true);
+            }}
           >
-            Xem chi tiết
+            Cập nhật
           </Button>
-          <Box sx={{position: 'relative'}}>
-            <IconButton
-              disabled={loadingDownload}
-              aria-label="delete"
-              onClick={handleDownload}
-            >
-              <DownloadIcon />
-            </IconButton>
-            {loadingDownload && (
-              <CircularProgress
-                size={24}
-                sx={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  marginTop: '-12px',
-                  marginLeft: '-12px',
-                }}
-              />
-            )}
-          </Box>
-        </MovieCard.Slot>
-      </MovieCard>
+        </TableCell>
+      </TableRow>
+      <SelectMovieDialog
+        props={{
+          open: openUpdate,
+          setOpen: setOpenUpdate,
+          movie: props.movie.movie,
+          moviePublic: props.movie,
+        }}
+      />
     </React.Fragment>
   );
 };

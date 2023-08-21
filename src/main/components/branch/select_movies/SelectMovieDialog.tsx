@@ -29,11 +29,12 @@ interface Props {
   open: boolean;
   setOpen: Function;
   movie: Movie;
+  moviePublic?: MoviePublic;
 }
 
 const SelectMovieDialog = ({props}: {props: Props}) => {
   const {LoginUser} = useContext(AuthContext);
-  const {addMoviePublic} = useMovieApi();
+  const {addMoviePublic, updateMoviePublic} = useMovieApi();
   const initMoviePublic = {
     uuid: '',
     movie: props.movie,
@@ -44,7 +45,9 @@ const SelectMovieDialog = ({props}: {props: Props}) => {
     totalTickets: 0,
   };
 
-  const [moviePublic, setMoviePublic] = useState<MoviePublic>(initMoviePublic);
+  const [moviePublic, setMoviePublic] = useState<MoviePublic>(
+    props.moviePublic ? props.moviePublic : initMoviePublic
+  );
 
   const handleSave = () => {
     if (moviePublic.price <= 0 || moviePublic.totalTickets <= 0) {
@@ -66,8 +69,34 @@ const SelectMovieDialog = ({props}: {props: Props}) => {
       .catch((e) => errorSnackbar(e));
   };
 
+  const handleUpdate = () => {
+    if (moviePublic.price <= 0 || moviePublic.totalTickets <= 0) {
+      warningSnackbar(
+        'Không được để trống và giá trị nhỏ nhất phải lớn hơn 1!'
+      );
+      return;
+    }
+
+    if (props.moviePublic) {
+      updateMoviePublic(props.moviePublic.uuid, {
+        ...moviePublic,
+        startDate: passDataTime(moviePublic.startDate),
+        endDate: passDataTime(moviePublic.endDate),
+      })
+        .then((response) => {
+          successSnackbar(
+            `Cập nhật thông tin phát hành của phim ${props.moviePublic?.movie.name} thành công`
+          );
+          props.setOpen(false);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  };
+
   const handleClose = () => {
-    setMoviePublic(initMoviePublic);
+    !props.moviePublic && setMoviePublic(initMoviePublic);
     props.setOpen(false);
   };
 
@@ -92,7 +121,11 @@ const SelectMovieDialog = ({props}: {props: Props}) => {
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
-        <DialogTitle id="scroll-dialog-title">{props.movie.name}</DialogTitle>
+        <DialogTitle id="scroll-dialog-title">{`${
+          props.moviePublic
+            ? 'Cập nhật công chiếu phim'
+            : 'Chọn công chiếu phim'
+        }: ${props.movie.name}`}</DialogTitle>
         <DialogContent dividers>
           <DialogContentText
             id="scroll-dialog-description"
@@ -149,7 +182,7 @@ const SelectMovieDialog = ({props}: {props: Props}) => {
               component="h3"
               sx={{fontSize: '20px', mt: 2, fontWeight: 600, mb: 1}}
             >
-              Thiết lập phát hành phim:
+              Thiết lập công chiếu phim:
             </Typography>
             <Grid component="form" container spacing={2} mt={1}>
               <Grid item xs={6}>
@@ -230,8 +263,13 @@ const SelectMovieDialog = ({props}: {props: Props}) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{textDecoration: 'underline'}}>
-          <Button sx={{fontWeight: 600}} onClick={handleSave}>
-            Phát hành phim
+          <Button
+            sx={{fontWeight: 600}}
+            onClick={props.moviePublic ? handleUpdate : handleSave}
+          >
+            {props.moviePublic
+              ? `Cập nhật phim công chiếu`
+              : `Phát hành phim công chiếu`}
           </Button>
           <Button sx={{fontWeight: 600}} onClick={handleClose}>
             Trở lại
