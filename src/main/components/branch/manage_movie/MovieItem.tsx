@@ -11,6 +11,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import {MoviePublic} from '../../../models/Movie';
 import dayjs from 'dayjs';
 import useFirebase from '../../../hooks/apis/useFirebase';
+import {formatter} from '../../../utils/CommonUtils';
 
 interface BaseProps {
   moviePublic: MoviePublic;
@@ -40,7 +41,7 @@ const MovieItem = ({props}: {props: BaseProps}) => {
             {` ${dayjs(props.moviePublic.endDate).format('HH:mm, DD/MM/YYYY')}`}
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{mb: 1}}>
-            {`Giá tiền (1 vé): ${props.moviePublic.price} VND`}
+            {`Giá tiền (1 vé): ${formatter.format(props.moviePublic.price)}`}
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{mb: 1}}>
             {`Số vé (còn lại):  ${props.moviePublic.totalTickets}`}

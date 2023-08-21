@@ -7,7 +7,7 @@ export interface Movie {
   name: string;
   duration: number;
   author: string;
-  releaseDate: Date;
+  releaseDate: Date | string;
   categories: Array<Category>;
   images: Array<File> | null;
   movieFile: File | null;
@@ -20,8 +20,8 @@ export interface MoviePublic {
   uuid: string;
   movie: Movie;
   branch: User;
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | string;
+  endDate: Date | string;
   price: number;
   totalTickets: number;
 }

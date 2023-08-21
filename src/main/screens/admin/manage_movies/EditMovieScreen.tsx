@@ -5,10 +5,13 @@ import {LoadingContext} from '../../../hooks/contexts/LoadingContext';
 import {Movie} from '../../../models/Movie';
 import EditMovie from '../../../components/admin/manage_movies/EditMovie';
 import {
+  Autocomplete,
+  Box,
   Button,
   Checkbox,
   FormControlLabel,
   Grid,
+  TextField,
   Typography,
 } from '@mui/material';
 import FileUpload from 'react-material-file-upload';
@@ -21,6 +24,11 @@ import {successSnackbar, warningSnackbar} from '../../../utils/showSnackbar';
 import {StorageLocation} from '../../../models/enums/StorageLocation';
 import {FileType} from '../../../models/enums/FileType';
 import _ from 'lodash';
+import {DatePicker, LocalizationProvider} from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 
 const EditMovieScreen = () => {
   const {getMovie, updateMovie} = useMovieApi();
@@ -193,14 +201,8 @@ const EditMovieScreen = () => {
 
   return (
     <React.Fragment>
-      <EditMovie
-        props={{
-          movie: movieUpdate,
-          setMovie: setMovieUpdate,
-          categories,
-        }}
-      >
-        <EditMovie.Slot name="title">
+      <Grid container justifyContent="center" alignItems="center" my={5}>
+        <Grid item>
           <Typography
             sx={{
               fontSize: '30px',
@@ -210,8 +212,10 @@ const EditMovieScreen = () => {
           >
             {`Chỉnh sửa thông tin phim: ${movieUpdate.name}`}
           </Typography>
-        </EditMovie.Slot>
-        <EditMovie.Slot name="file">
+        </Grid>
+      </Grid>
+      <Box component="form" noValidate>
+        <Grid container spacing={2} alignItems="center">
           <Grid item xs={6}>
             {changeImages ? (
               <FileUpload
@@ -277,13 +281,110 @@ const EditMovieScreen = () => {
               }
             />
           </Grid>
-        </EditMovie.Slot>
-        <EditMovie.Slot name="action">
-          <Button onClick={save} variant="contained">
-            Cập nhật phim
-          </Button>
-        </EditMovie.Slot>
-      </EditMovie>
+          <Grid item xs={6}>
+            <TextField
+              required
+              margin="normal"
+              label="Tên phim"
+              variant="outlined"
+              value={movieUpdate.name}
+              onChange={(event) =>
+                setMovieUpdate({...movieUpdate, name: event.target.value})
+              }
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Autocomplete
+              multiple
+              id="checkboxes-tags-demo"
+              options={categories}
+              disableCloseOnSelect
+              value={movieUpdate.categories}
+              onChange={(event, newValue: Category[]) => {
+                setMovieUpdate({...movieUpdate, categories: newValue});
+              }}
+              getOptionLabel={(option) => option.name}
+              isOptionEqualToValue={(option: Category, value: Category) =>
+                option.uuid === value.uuid
+              }
+              renderOption={(props, option, {selected}) => (
+                <li {...props}>
+                  <Checkbox
+                    icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+                    checkedIcon={<CheckBoxIcon fontSize="small" />}
+                    style={{marginRight: 8}}
+                    checked={selected}
+                  />
+                  {option.name}
+                </li>
+              )}
+              renderInput={(params) => (
+                <TextField {...params} label="Thể loại" />
+              )}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              required
+              margin="normal"
+              label="Thời lượng (phút)"
+              type="number"
+              variant="outlined"
+              value={movieUpdate.duration}
+              onChange={(event) =>
+                setMovieUpdate({
+                  ...movieUpdate,
+                  duration: Number(event.target.value),
+                })
+              }
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              required
+              margin="normal"
+              label="Tác giả"
+              variant="outlined"
+              value={movieUpdate.author}
+              onChange={(event) =>
+                setMovieUpdate({...movieUpdate, author: event.target.value})
+              }
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Ngày phát hành"
+                value={dayjs(movieUpdate.releaseDate)}
+                onChange={(newValue) => {
+                  setMovieUpdate({
+                    ...movieUpdate,
+                    releaseDate: newValue ? newValue.toDate() : new Date(),
+                  });
+                }}
+                format="DD/MM/YYYY"
+                sx={{width: '100%'}}
+              />
+            </LocalizationProvider>
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          style={{marginTop: '24px'}}
+          justifyContent="center"
+          alignItems="center"
+          mt={3}
+        >
+          <Grid item>
+            <Button onClick={save} variant="contained">
+              Cập nhật phim
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
     </React.Fragment>
   );
 };

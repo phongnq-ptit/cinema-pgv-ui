@@ -73,6 +73,7 @@ const ManageMovies = () => {
   const [movies, setMovies] = useState<Array<Movie>>([]);
   const [movieSelected, setMovieSelected] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [searchName, setSearchName] = useState<string>('');
 
   const [tab, setTab] = useState<number>(0);
   const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
@@ -80,7 +81,10 @@ const ManageMovies = () => {
   };
 
   useEffect(() => {
-    const params = {active: tab === 0 ? 1 : 0};
+    const params = {
+      active: tab === 0 ? 1 : 0,
+      // name: searchName === '' ? undefined : searchName,
+    };
     getListMovies(params)
       .then((response) => {
         setMovies(response.data);
@@ -129,10 +133,12 @@ const ManageMovies = () => {
             <TextField
               label="Tìm kiếm phim theo tên"
               sx={{ml: 3, width: '80%'}}
+              value={searchName}
+              onChange={(event) => setSearchName(event.target.value)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">
-                    <IconButton>
+                    <IconButton onClick={() => setLoading(!loading)}>
                       <SearchIcon />
                     </IconButton>
                   </InputAdornment>

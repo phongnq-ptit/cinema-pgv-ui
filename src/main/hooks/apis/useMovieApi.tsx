@@ -8,6 +8,7 @@ interface MoviePublicParams {
 
 interface MovieParams {
   active: number;
+  name: string;
 }
 
 const useMovieApi = () => {
