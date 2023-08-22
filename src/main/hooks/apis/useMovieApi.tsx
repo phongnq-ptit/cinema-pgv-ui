@@ -12,6 +12,12 @@ interface MovieParams {
   name: string;
 }
 
+interface MovieParamsForClient {
+  movieName: string;
+  branchUuids: string;
+  categoryUuids: string;
+}
+
 const useMovieApi = () => {
   const {GET, POST, PATCH} = useApi();
   const baseUrl = 'api/movies';
@@ -32,10 +38,10 @@ const useMovieApi = () => {
     return GET<ApiResponse<Array<MoviePublic>>>(baseUrl + '/public', params);
   }
 
-  async function getListMoviePublicForClient(): Promise<
-    ApiResponse<Array<Movie>>
-  > {
-    return GET<ApiResponse<Array<Movie>>>(baseUrl + '/public/client');
+  async function getListMoviePublicForClient(
+    params?: Partial<MovieParamsForClient>
+  ): Promise<ApiResponse<Array<Movie>>> {
+    return GET<ApiResponse<Array<Movie>>>(baseUrl + '/public/client', params);
   }
 
   async function changeMovieActive(

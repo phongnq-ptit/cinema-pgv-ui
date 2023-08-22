@@ -84,6 +84,15 @@ const Filter = ({props}: {props: Props}) => {
       }
     };
 
+  const handleClear = () => {
+    setFilter({
+      searchName: '',
+      branchUuids: [],
+      categoryUuids: [],
+    });
+    setReload(!reload);
+  };
+
   const handleSelectCategories =
     (category: Category) => (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.target.checked) {
@@ -175,13 +184,22 @@ const Filter = ({props}: {props: Props}) => {
         </Accordion>
       </Grid>
       <Grid item xs={12}>
-        <Button
-          variant="contained"
-          onClick={() => setReload(!reload)}
-          fullWidth
-        >
-          Áp dụng
-        </Button>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Button variant="outlined" onClick={handleClear} fullWidth>
+              Làm mới
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              variant="contained"
+              onClick={() => setReload(!reload)}
+              fullWidth
+            >
+              Áp dụng
+            </Button>
+          </Grid>
+        </Grid>
       </Grid>
     </React.Fragment>
   );

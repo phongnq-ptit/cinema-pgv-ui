@@ -29,7 +29,18 @@ const Home = () => {
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
-    getListMoviePublicForClient()
+    const params = {
+      movieName: filter.searchName === '' ? undefined : filter.searchName,
+      branchUuids:
+        filter.branchUuids.length === 0
+          ? undefined
+          : filter.branchUuids.join('#'),
+      categoryUuids:
+        filter.categoryUuids.length === 0
+          ? undefined
+          : filter.categoryUuids.join('#'),
+    };
+    getListMoviePublicForClient(params)
       .then((response) => {
         setMovies(response.data);
       })
