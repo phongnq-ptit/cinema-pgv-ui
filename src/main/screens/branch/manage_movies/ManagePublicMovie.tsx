@@ -25,7 +25,11 @@ const ManagePublicMovie = () => {
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
-    getListMoviePublic({branchUuid: LoginUser.uuid})
+    const params = {
+      branchUuid: LoginUser.uuid,
+      movieName: searchName === '' ? undefined : searchName,
+    };
+    getListMoviePublic(params)
       .then((response) => {
         setListMoviePublic(response.data);
       })

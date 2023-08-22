@@ -26,7 +26,8 @@ const SelectMovies = () => {
   };
 
   useEffect(() => {
-    getListMovies()
+    const params = {name: searchName === '' ? undefined : searchName};
+    getListMovies(params)
       .then((response) => {
         setMovies(response.data);
       })

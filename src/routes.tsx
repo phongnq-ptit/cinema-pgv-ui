@@ -7,7 +7,7 @@ import DashboardLayout from './main/layout/DashboardLayout';
 import AttentionVerifyAccount from './main/components/common/attentionPage/AttentionVerifyAccount';
 import VerifyAccount from './main/components/common/VerifyAccount';
 import AttentionVerifySuccessful from './main/components/common/attentionPage/AttentionVerifySuccessful';
-import Home from './main/screens/client/Home';
+import Home from './main/screens/client/home/Home';
 import ManageMovies from './main/screens/admin/manage_movies/ManageMovies';
 import CreateMovie from './main/screens/admin/manage_movies/CreateMovie';
 import SelectMovies from './main/screens/branch/select_movies/SelectMovies';
@@ -21,6 +21,7 @@ const routes = [
     element: <DashboardLayout />,
     children: [
       {path: 'home', element: <Home />},
+      {path: 'movie/:movieUuid', element: <>abc</>},
       {path: 'tickets', element: <Home />},
       {path: 'profile', element: <Home />},
       {path: '404', element: <>404</>},

@@ -83,7 +83,7 @@ const ManageMovies = () => {
   useEffect(() => {
     const params = {
       active: tab === 0 ? 1 : 0,
-      // name: searchName === '' ? undefined : searchName,
+      name: searchName === '' ? undefined : searchName,
     };
     getListMovies(params)
       .then((response) => {
