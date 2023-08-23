@@ -26,6 +26,7 @@ import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import {ListItemButton, ListItemIcon, ListItemText} from '@mui/material';
+import Footer from '../components/common/Footer';
 
 const Navbar = () => {
   const {LoginUser} = useContext(AuthContext);
@@ -242,6 +243,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function DashboardLayout() {
+  const location = useLocation();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -320,6 +322,7 @@ export default function DashboardLayout() {
         <Container maxWidth="xl" sx={{mt: 4, mb: 4}}>
           <Outlet />
         </Container>
+        {location.pathname.includes('/client') && <Footer />}
       </Box>
     </Box>
   );

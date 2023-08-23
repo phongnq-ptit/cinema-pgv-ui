@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import {makeStyles} from '@mui/styles';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import AddCardIcon from '@mui/icons-material/AddCard';
 
 interface Props {
@@ -49,6 +49,8 @@ const useStyles = makeStyles({
 
 const MovieItemForClient = ({props}: {props: Props}) => {
   const classes = useStyles();
+  const navigate = useNavigate();
+
   return (
     <React.Fragment>
       <Grid item xs={3}>
@@ -60,7 +62,7 @@ const MovieItemForClient = ({props}: {props: Props}) => {
           <CardContent className={classes.content}>
             <Link
               className={classes.truncate}
-              to={`/client/movie/${props.movie.uuid}`}
+              to={`/client/home/${props.movie.uuid}`}
               style={{
                 color: '#546e7a',
                 marginBottom: '0.6rem',
@@ -92,6 +94,7 @@ const MovieItemForClient = ({props}: {props: Props}) => {
                 sx={{textAlign: 'center', width: '80%'}}
                 startIcon={<AddCardIcon />}
                 variant="outlined"
+                onClick={() => navigate(`/client/payment/${props.movie.uuid}`)}
               >
                 Mua vé ngay
               </Button>

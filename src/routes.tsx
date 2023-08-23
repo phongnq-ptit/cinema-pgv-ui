@@ -14,6 +14,8 @@ import SelectMovies from './main/screens/branch/select_movies/SelectMovies';
 import ManagePublicMovie from './main/screens/branch/manage_movies/ManagePublicMovie';
 import ManageCategory from './main/screens/admin/manage_categories/ManageCategory';
 import EditMovieScreen from './main/screens/admin/manage_movies/EditMovieScreen';
+import MovieDetail from './main/screens/client/movie/MovieDetail';
+import Payment from './main/screens/client/payment/Payment';
 
 const routes = [
   {
@@ -21,7 +23,8 @@ const routes = [
     element: <DashboardLayout />,
     children: [
       {path: 'home', element: <Home />},
-      {path: 'movie/:movieUuid', element: <>abc</>},
+      {path: 'home/:movieUuid', element: <MovieDetail />},
+      {path: 'payment/:movieUuid', element: <Payment />},
       {path: 'tickets', element: <Home />},
       {path: 'profile', element: <Home />},
       {path: '404', element: <>404</>},

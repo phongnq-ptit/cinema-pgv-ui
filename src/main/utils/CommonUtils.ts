@@ -12,3 +12,12 @@ export const showTime = (date: Date) => {
 export const passDataTime = (date: Date | string) => {
   return dayjs(date).format('YYYY-MM-DDTHH:mm:ssZ').replace('+07:00', 'Z');
 };
+
+export const formatDate = (
+  startDate: Date | string,
+  endDate: Date | string
+) => {
+  return `${dayjs(startDate).format('HH:mm')} - ${dayjs(endDate).format(
+    'HH:mm'
+  )}, ${dayjs(startDate).format('DD/MM/YYYY')}`;
+};
