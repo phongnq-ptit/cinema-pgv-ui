@@ -28,6 +28,12 @@ const SelectTicket = ({props}: {props: Props}) => {
       warningSnackbar('Số lượng vé phải lớn hơn hoặc bằng 1!');
       return;
     }
+    if (value && props.saveTargets.numberOfTicket > value.totalTickets) {
+      warningSnackbar(
+        `Số lượng vé không đủ. Vui lòng chọn ít hơn ${value.totalTickets} vé!`
+      );
+      return;
+    }
     props.setSteps(props.steps + 1);
   };
 
