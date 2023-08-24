@@ -12,7 +12,6 @@ import {
 import dayjs from 'dayjs';
 import jsPDF from 'jspdf';
 import DownloadIcon from '@mui/icons-material/Download';
-import QRCode from 'qrcode.react';
 
 const PurchaseDetail = () => {
   const {getPurchase, updatePurchaseDownload} = usePaymentApi();
@@ -31,6 +30,11 @@ const PurchaseDetail = () => {
     // eslint-disable-next-line
   }, [params.purchaseUuid, reload]);
 
+  const getImageSrc = (content: string) => {
+    const URL = `https://chart.googleapis.com/chart?chs=300&cht=qr&chl=${content}&choe=UTF-8`;
+    return URL;
+  };
+
   const downloadPDF = () => {
     if (purchase) {
       updatePurchaseDownload(purchase.uuid)
@@ -44,6 +48,10 @@ const PurchaseDetail = () => {
           doc.setFontSize(18);
           doc.text('Cinema ticket', 105, 20, {align: 'center'});
 
+          let imageData = new Image(300, 300);
+          imageData.src = getImageSrc(JSON.stringify(purchase));
+          doc.addImage(imageData, 'PNG', 56, 25, 100, 100);
+
           // Add details
           doc.setFontSize(12);
           doc.text(
@@ -52,8 +60,8 @@ const PurchaseDetail = () => {
                 ? purchase?.moviePublic.movie.name
                 : ''
             )}`,
-            20,
-            100
+            38,
+            130
           );
           doc.text(
             `Branch: ${removeVietnameseTones(
@@ -61,10 +69,10 @@ const PurchaseDetail = () => {
                 ? purchase?.moviePublic.branch.userName
                 : ''
             )}`,
-            20,
-            110
+            38,
+            140
           );
-          doc.text(`Price: ${purchase?.moviePublic.price}`, 20, 120);
+          doc.text(`Price: ${purchase?.moviePublic.price}`, 38, 150);
           doc.text(
             `Date: ${formatDate(
               purchase?.moviePublic.startDate
@@ -74,8 +82,8 @@ const PurchaseDetail = () => {
                 ? purchase.moviePublic.endDate
                 : new Date()
             )}`,
-            20,
-            130
+            38,
+            160
           );
 
           doc.save(
