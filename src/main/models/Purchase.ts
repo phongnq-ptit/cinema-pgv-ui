@@ -8,4 +8,5 @@ export interface Purchase {
   quantityOfTickets: number;
   createdAt: Date;
   updatedAt: Date;
+  downloads: number;
 }

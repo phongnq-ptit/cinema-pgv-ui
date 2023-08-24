@@ -14,7 +14,7 @@ interface PurchaseParams {
 }
 
 const usePaymentApi = () => {
-  const {GET, POST} = useApi();
+  const {GET, POST, PATCH} = useApi();
   const baseUrl = '/api/payment';
 
   async function getListMoviePublicForPayment(
@@ -42,11 +42,18 @@ const usePaymentApi = () => {
     return POST<ApiResponse<Array<Purchase>>>(baseUrl, purchase);
   }
 
+  async function updatePurchaseDownload(
+    uuid: string
+  ): Promise<ApiResponse<Purchase>> {
+    return PATCH<ApiResponse<Purchase>>(baseUrl + `/downloads/${uuid}`, null);
+  }
+
   return {
     getListMoviePublicForPayment,
     getPurchasesByUser,
     getPurchase,
     createPurchase,
+    updatePurchaseDownload,
   };
 };
 

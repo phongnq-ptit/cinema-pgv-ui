@@ -28,6 +28,7 @@ const ManageTickets = () => {
           setLoadingPage(false);
         }, 750);
       });
+    // eslint-disable-next-line
   }, []);
 
   const handleClick = (item: Purchase) => {
