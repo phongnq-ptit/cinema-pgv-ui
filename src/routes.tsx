@@ -16,6 +16,9 @@ import ManageCategory from './main/screens/admin/manage_categories/ManageCategor
 import EditMovieScreen from './main/screens/admin/manage_movies/EditMovieScreen';
 import MovieDetail from './main/screens/client/movie/MovieDetail';
 import Payment from './main/screens/client/payment/Payment';
+import ManageTickets from './main/screens/client/tickets/ManageTickets';
+import AttentionPaymentSuccessful from './main/components/common/attentionPage/AttentionPaymentSuccessful';
+import PurchaseDetail from './main/screens/client/tickets/PurchaseDetail';
 
 const routes = [
   {
@@ -25,7 +28,9 @@ const routes = [
       {path: 'home', element: <Home />},
       {path: 'home/:movieUuid', element: <MovieDetail />},
       {path: 'payment/:movieUuid', element: <Payment />},
-      {path: 'tickets', element: <Home />},
+      {path: 'payment/successful', element: <AttentionPaymentSuccessful />},
+      {path: 'tickets', element: <ManageTickets />},
+      {path: 'tickets/:purchaseUuid', element: <PurchaseDetail />},
       {path: 'profile', element: <Home />},
       {path: '404', element: <>404</>},
       {path: '', element: <Navigate to="/404" />},

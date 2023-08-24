@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, {useContext, useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {Movie, MoviePublic} from '../../../models/Movie';
 import useMovieApi from '../../../hooks/apis/useMovieApi';
 import {LoadingContext} from '../../../hooks/contexts/LoadingContext';
@@ -18,6 +18,9 @@ import SelectBranches from './step/SelectBranches';
 import SelectTicket from './step/SelectTicket';
 import ReviewPayment from './step/ReviewPayment';
 import usePaymentApi from '../../../hooks/apis/usePaymentApi';
+import {AuthContext} from '../../../hooks/contexts/AuthContext';
+import {Purchase} from '../../../models/Purchase';
+import {successSnackbar} from '../../../utils/showSnackbar';
 
 export interface ISaveTargets {
   moviePublicUuid: string | undefined;
@@ -29,8 +32,10 @@ export interface ISaveTargets {
 
 const Payment = () => {
   const params = useParams();
+  const navigate = useNavigate();
+  const {LoginUser} = useContext(AuthContext);
   const {getMovie} = useMovieApi();
-  const {getListMoviePublicForPayment} = usePaymentApi();
+  const {getListMoviePublicForPayment, createPurchase} = usePaymentApi();
   const {setLoadingPage} = useContext(LoadingContext);
   const [steps, setSteps] = useState<number>(0);
   const STEPS = ['Chọn ngày giờ', 'Chọn chi nhánh', 'Chọn loại vé', 'Tổng hợp'];
@@ -150,15 +155,24 @@ const Payment = () => {
     setSteps(steps - 1);
   }
 
-  function _handleNext() {
+  function _handleSubmit() {
     if (isLastStep) {
-      // do nothing
-    } else {
       setLoadingPage(true);
-      setSteps(steps + 1);
+      createPurchase({
+        quantityOfTickets: saveTargets.numberOfTicket,
+        moviePublic: moviePublics[0],
+        user: LoginUser,
+      } as Purchase)
+        .then((response) => {
+          successSnackbar('Thanh toán thành công!');
+          navigate('/client/payment/successful');
+        })
+        .catch((e) => {
+          console.log(e);
+        });
       setTimeout(() => {
         setLoadingPage(false);
-      }, 750);
+      }, 2000);
     }
   }
 
@@ -209,8 +223,8 @@ const Payment = () => {
                       Trở lại
                     </Button>
                     {isLastStep && (
-                      <Button variant="contained" onClick={_handleNext}>
-                        {'Thanh toán với Momo'}
+                      <Button variant="contained" onClick={_handleSubmit}>
+                        {'Thanh toán'}
                       </Button>
                     )}
                   </Box>
