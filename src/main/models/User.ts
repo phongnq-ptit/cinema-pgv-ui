@@ -7,7 +7,7 @@ export interface User {
   address: string;
   role: UserRole;
   active: number;
-  cinemaId: string;
+  cinemaId: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

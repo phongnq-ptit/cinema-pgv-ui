@@ -19,6 +19,10 @@ import Payment from './main/screens/client/payment/Payment';
 import ManageTickets from './main/screens/client/tickets/ManageTickets';
 import AttentionPaymentSuccessful from './main/components/common/attentionPage/AttentionPaymentSuccessful';
 import PurchaseDetail from './main/screens/client/tickets/PurchaseDetail';
+import ManageUsers from './main/screens/admin/manage_users/ManageUsers';
+import CreateUser from './main/screens/admin/manage_users/CreateUser';
+import ManageBranches from './main/screens/admin/manage_branches/ManageBranches';
+import CreateBranch from './main/screens/admin/manage_branches/CreateBranch';
 
 const routes = [
   {
@@ -41,8 +45,12 @@ const routes = [
     path: '/admin',
     element: <DashboardLayout />,
     children: [
-      {path: 'manage-user', element: <ManageMovies />},
-      {path: 'manage-branch', element: <ManageMovies />},
+      {path: 'manage-user', element: <ManageUsers />},
+      {path: 'manage-user/create', element: <CreateUser />},
+      {path: 'manage-user/:userUuid', element: <CreateUser />},
+      {path: 'manage-branch', element: <ManageBranches />},
+      {path: 'manage-branch/create', element: <CreateBranch />},
+      {path: 'manage-branch/:userUuid', element: <CreateBranch />},
       {path: 'movies', element: <ManageMovies />},
       {path: 'movies/:movieUuid', element: <EditMovieScreen />},
       {path: 'movies/create', element: <CreateMovie />},

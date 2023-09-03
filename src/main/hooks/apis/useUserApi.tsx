@@ -6,10 +6,15 @@ import {ApiResponse} from '../../models/base';
 
 interface Params {
   role: UserRole;
+  search: string;
+}
+
+export interface ICreateUser extends User {
+  password: string;
 }
 
 const useUserApi = () => {
-  const {GET} = useApi();
+  const {GET, POST} = useApi();
   const baseUrl = 'api/users';
 
   async function getUserByRole(
@@ -18,7 +23,15 @@ const useUserApi = () => {
     return GET<ApiResponse<User[]>>(baseUrl, params);
   }
 
-  return {getUserByRole};
+  async function getUser(uuid: string): Promise<ApiResponse<User>> {
+    return GET<ApiResponse<User>>(baseUrl + `/${uuid}`);
+  }
+
+  async function createUser(newUser: ICreateUser): Promise<ApiResponse<User>> {
+    return POST<ApiResponse<User>>(baseUrl, newUser);
+  }
+
+  return {getUserByRole, getUser, createUser};
 };
 
 export default useUserApi;

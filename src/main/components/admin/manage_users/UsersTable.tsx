@@ -1,5 +1,4 @@
 import {
-  Checkbox,
   Paper,
   Table,
   TableBody,
@@ -10,19 +9,15 @@ import {
   TableRow,
 } from '@mui/material';
 import React from 'react';
-import {Movie} from '../../../models/Movie';
-import MovieRow from './MovieRow';
-import _ from 'lodash';
+import {User} from '../../../models/User';
+import UserRow from './UserRow';
 
-interface BaseProps {
-  movies: Array<Movie>;
-  tab: number;
-  movieSelected: string[];
-  setMovieSelected: Function;
+interface Props {
+  users: User[];
 }
 
 interface Column {
-  id: 'name' | 'author' | 'duration' | 'releaseDate' | 'category' | 'action';
+  id: 'name' | 'email' | 'address' | 'role' | 'active' | 'action';
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -30,22 +25,22 @@ interface Column {
 }
 
 const columns: Column[] = [
-  {id: 'name', label: 'Tên', minWidth: 170},
-  {id: 'author', label: 'Tác giả', minWidth: 100},
+  {id: 'name', label: 'Tên', minWidth: 200},
+  {id: 'email', label: 'Email', minWidth: 200},
   {
-    id: 'duration',
-    label: 'Thời lượng (phút)',
-    minWidth: 170,
+    id: 'address',
+    label: 'Địa chỉ',
+    minWidth: 200,
   },
   {
-    id: 'releaseDate',
-    label: 'Ngày phát hành',
-    minWidth: 170,
+    id: 'role',
+    label: 'Vai trò',
+    minWidth: 50,
   },
   {
-    id: 'category',
-    label: 'Thể loại',
-    minWidth: 170,
+    id: 'active',
+    label: 'Xác thực',
+    minWidth: 50,
   },
   {
     id: 'action',
@@ -54,7 +49,7 @@ const columns: Column[] = [
   },
 ];
 
-const MovieTable = ({props}: {props: BaseProps}) => {
+const UsersTable = ({props}: {props: Props}) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -69,21 +64,6 @@ const MovieTable = ({props}: {props: BaseProps}) => {
     setPage(0);
   };
 
-  const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      props.setMovieSelected(
-        _.uniq([
-          ...props.movies
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((item) => item.uuid),
-          ...props.movieSelected,
-        ])
-      );
-    } else {
-      props.setMovieSelected([]);
-    }
-  };
-
   return (
     <React.Fragment>
       <Paper sx={{width: '100%'}}>
@@ -91,15 +71,6 @@ const MovieTable = ({props}: {props: BaseProps}) => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    color="primary"
-                    onChange={handleSelectAll}
-                    inputProps={{
-                      'aria-label': 'select all desserts',
-                    }}
-                  />
-                </TableCell>
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
@@ -113,19 +84,10 @@ const MovieTable = ({props}: {props: BaseProps}) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.movies
+              {props.users
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((movie) => {
-                  return (
-                    <MovieRow
-                      props={{
-                        movie,
-                        movieSelected: props.movieSelected,
-                        setMovieSelected: props.setMovieSelected,
-                      }}
-                      key={movie.uuid}
-                    />
-                  );
+                .map((user) => {
+                  return <UserRow props={{user}} key={user.uuid} />;
                 })}
             </TableBody>
           </Table>
@@ -134,7 +96,7 @@ const MovieTable = ({props}: {props: BaseProps}) => {
           sx={{mr: 6}}
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={props.movies.length}
+          count={props.users.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -145,4 +107,4 @@ const MovieTable = ({props}: {props: BaseProps}) => {
   );
 };
 
-export default MovieTable;
+export default UsersTable;
