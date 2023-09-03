@@ -25,10 +25,17 @@ import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import {ListItemButton, ListItemIcon, ListItemText} from '@mui/material';
+import {
+  Avatar,
+  Grid,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
 import Footer from '../components/common/Footer';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
-const Navbar = () => {
+const Navbar = ({open}: {open: boolean}) => {
   const {LoginUser} = useContext(AuthContext);
 
   const clientItems = [
@@ -110,8 +117,68 @@ const Navbar = () => {
     },
   ];
 
+  const getRole = () => {
+    switch (LoginUser.role) {
+      case UserRole.ADMIN:
+        return 'Quản trị viên';
+      case UserRole.BRANCH:
+        return 'Chi nhánh';
+      case UserRole.CLIENT:
+        return 'Khách hàng';
+      default:
+        return 'unknown';
+    }
+  };
+
   return (
     <React.Fragment>
+      {LoginUser && open && (
+        <Grid
+          container
+          spacing={2}
+          flexDirection="column"
+          p={3}
+          alignItems="center"
+        >
+          <Grid item>
+            <Avatar
+              sx={{
+                backgroundImage:
+                  'url(https://source.unsplash.com/random?wallpapers)',
+                width: '90px',
+                height: '90px',
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                textDecoration: 'none',
+                textAlign: 'center',
+                fontSize: '2rem',
+              }}
+            >
+              {LoginUser.userName.slice(0, 2).toUpperCase()}
+            </Avatar>
+          </Grid>
+          <Grid item>
+            <Grid container alignItems="center" spacing={1}>
+              <Grid item>
+                <AccountBoxIcon sx={{color: 'GrayText'}} />
+              </Grid>
+              <Grid item>
+                <Typography
+                  sx={{
+                    fontFamily: 'monospace',
+                    fontWeight: 700,
+                    textDecoration: 'none',
+                    textAlign: 'center',
+                    color: 'GrayText',
+                  }}
+                >
+                  {getRole()}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      )}
       {LoginUser.role === UserRole.CLIENT &&
         clientItems.map((item) => (
           <NavItem
@@ -244,9 +311,23 @@ const Drawer = styled(MuiDrawer, {
 
 export default function DashboardLayout() {
   const location = useLocation();
+  const {LoginUser} = useContext(AuthContext);
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
+  };
+
+  const getWelcome = () => {
+    switch (LoginUser.role) {
+      case UserRole.ADMIN:
+        return 'Quản trị viên, ';
+      case UserRole.BRANCH:
+        return 'Chi nhánh, ';
+      case UserRole.CLIENT:
+        return 'Khách hàng, ';
+      default:
+        return null;
+    }
   };
 
   return (
@@ -270,22 +351,67 @@ export default function DashboardLayout() {
           >
             <MenuIcon />
           </IconButton>
-          <LogoDevIcon sx={{display: {xs: 'none', md: 'flex'}, mr: 1}} />
-          <Typography
-            variant="h6"
-            noWrap
-            sx={{
-              mr: 2,
-              display: {xs: 'none', md: 'flex'},
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
+          <Grid
+            container
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{width: '100%', px: 2}}
           >
-            CINEMA PGV
-          </Typography>
+            <Grid item>
+              <Grid container alignItems="center">
+                <LogoDevIcon sx={{mr: 1}} />
+                <Typography
+                  variant="h6"
+                  noWrap
+                  sx={{
+                    mr: 2,
+                    fontFamily: 'monospace',
+                    fontWeight: 700,
+                    letterSpacing: '.3rem',
+                    color: 'inherit',
+                    textDecoration: 'none',
+                    textAlign: 'center',
+                  }}
+                >
+                  CINEMA PGV
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid item>
+              {getWelcome() !== null && (
+                <Grid container alignItems="center" spacing={1}>
+                  <Grid item>
+                    <Typography
+                      sx={{
+                        display: 'inline',
+                        fontFamily: 'monospace',
+                        fontWeight: 600,
+                        color: 'inherit',
+                        textDecoration: 'none',
+                        textAlign: 'center',
+                      }}
+                    >
+                      {getWelcome()}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography
+                      sx={{
+                        display: 'inline',
+                        fontFamily: 'monospace',
+                        fontWeight: 600,
+                        color: 'inherit',
+                        textDecoration: 'none',
+                        textAlign: 'center',
+                      }}
+                    >
+                      {LoginUser.userName}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              )}
+            </Grid>
+          </Grid>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -303,7 +429,7 @@ export default function DashboardLayout() {
         </Toolbar>
         <Divider />
         <List component="nav">
-          <Navbar />
+          <Navbar open={open} />
         </List>
       </Drawer>
       <Box
