@@ -14,7 +14,7 @@ export interface ICreateUser extends User {
 }
 
 const useUserApi = () => {
-  const {GET, POST} = useApi();
+  const {GET, POST, PATCH} = useApi();
   const baseUrl = 'api/users';
 
   async function getUserByRole(
@@ -31,7 +31,14 @@ const useUserApi = () => {
     return POST<ApiResponse<User>>(baseUrl, newUser);
   }
 
-  return {getUserByRole, getUser, createUser};
+  async function updateUser(
+    uuid: string,
+    userUpdate: User
+  ): Promise<ApiResponse<User>> {
+    return PATCH<ApiResponse<User>>(baseUrl + `/${uuid}`, userUpdate);
+  }
+
+  return {getUserByRole, getUser, createUser, updateUser};
 };
 
 export default useUserApi;

@@ -23,6 +23,8 @@ import ManageUsers from './main/screens/admin/manage_users/ManageUsers';
 import CreateUser from './main/screens/admin/manage_users/CreateUser';
 import ManageBranches from './main/screens/admin/manage_branches/ManageBranches';
 import CreateBranch from './main/screens/admin/manage_branches/CreateBranch';
+import EditUser from './main/screens/admin/manage_users/EditUser';
+import EditBranch from './main/screens/admin/manage_branches/EditBranch';
 
 const routes = [
   {
@@ -47,10 +49,10 @@ const routes = [
     children: [
       {path: 'manage-user', element: <ManageUsers />},
       {path: 'manage-user/create', element: <CreateUser />},
-      {path: 'manage-user/:userUuid', element: <CreateUser />},
+      {path: 'manage-user/:userUuid', element: <EditUser />},
       {path: 'manage-branch', element: <ManageBranches />},
       {path: 'manage-branch/create', element: <CreateBranch />},
-      {path: 'manage-branch/:userUuid', element: <CreateBranch />},
+      {path: 'manage-branch/:userUuid', element: <EditBranch />},
       {path: 'movies', element: <ManageMovies />},
       {path: 'movies/:movieUuid', element: <EditMovieScreen />},
       {path: 'movies/create', element: <CreateMovie />},

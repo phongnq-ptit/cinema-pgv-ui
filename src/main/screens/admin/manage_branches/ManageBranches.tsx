@@ -63,7 +63,7 @@ const ManageBranches = () => {
             fontWeight: 600,
           }}
         >
-          Danh sách Khánh hàng
+          Danh sách chi nhánh
         </Typography>
         <Grid container spacing={2} mt={2} alignItems="center">
           <Grid item xs={6}>

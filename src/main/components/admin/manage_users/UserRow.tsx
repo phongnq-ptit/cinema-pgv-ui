@@ -1,6 +1,6 @@
 import React from 'react';
 import {User} from '../../../models/User';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {Button, TableCell, TableRow} from '@mui/material';
 
 interface Props {
@@ -9,6 +9,7 @@ interface Props {
 
 const UserRow = ({props}: {props: Props}) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <React.Fragment>
@@ -25,7 +26,11 @@ const UserRow = ({props}: {props: Props}) => {
             variant="outlined"
             sx={{mx: 1}}
             onClick={() => {
-              navigate(`/admin/manage-user/${props.user.uuid}`);
+              navigate(
+                location.pathname.includes('manage-branch')
+                  ? `/admin/manage-branch/${props.user.uuid}`
+                  : `/admin/manage-user/${props.user.uuid}`
+              );
             }}
           >
             Cập nhật
