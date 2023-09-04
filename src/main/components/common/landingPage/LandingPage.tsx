@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import {useNavigate} from 'react-router-dom';
+import Footer from '../Footer';
 
 function Copyright() {
   return (
@@ -52,23 +53,31 @@ export default function LandingPage() {
       <main>
         <Box
           sx={{
-            // bgcolor: 'background.paper',
-            pt: 8,
+            bgcolor: 'background.paper',
+            pt: 20,
             pb: 6,
             backgroundImage:
-              'url("https://source.unsplash.com/random?wallpapers")',
+              'url("https://i.pinimg.com/564x/e0/f4/ba/e0f4baaf2bf43934f69db75d4726f9fb.jpg")',
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
+            height: '70vh',
           }}
         >
-          <Container maxWidth="sm">
+          <Container
+            maxWidth="sm"
+            sx={{
+              backgroundColor: 'rgba(207, 207, 207, 0.7)',
+              p: 4,
+              borderRadius: 10,
+            }}
+          >
             <Typography
               component="h1"
               variant="h2"
               align="center"
               color="text.primary"
-              fontWeight="500"
+              fontWeight="700"
               gutterBottom
             >
               Cinema PGV
@@ -79,9 +88,10 @@ export default function LandingPage() {
               color="text.secondary"
               paragraph
             >
-              Something short and leading about the collection below—its
-              contents, the creator, etc. Make it short and sweet, but not too
-              short so folks don&apos;t simply skip over it entirely.
+              Chúng tôi không ngừng nâng cao chất lượng dịch vụ và đa dạng hóa
+              lịch chiếu để đáp ứng mọi nhu cầu của khán giả yêu điện ảnh. Hãy
+              cùng chúng tôi tạo nên những kỷ niệm đáng nhớ và thú vị từ mỗi
+              buổi chiếu tại PGV Cinema!
             </Typography>
             <Stack
               sx={{pt: 4}}
@@ -93,13 +103,13 @@ export default function LandingPage() {
                 variant="contained"
                 onClick={() => onClickAction('/login')}
               >
-                Sign in
+                Đăng nhập
               </Button>
               <Button
-                variant="outlined"
+                variant="contained"
                 onClick={() => onClickAction('/register')}
               >
-                Sign up
+                Đăng ký
               </Button>
             </Stack>
           </Container>
@@ -143,22 +153,7 @@ export default function LandingPage() {
           </Grid>
         </Container>
       </main>
-      {/* Footer */}
-      <Box sx={{bgcolor: 'background.paper', p: 6}} component="footer">
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="text.secondary"
-          component="p"
-        >
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </Box>
-      {/* End footer */}
+      <Footer />
     </React.Fragment>
   );
 }

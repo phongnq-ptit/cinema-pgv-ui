@@ -69,7 +69,8 @@ const Register = () => {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+          backgroundImage:
+            'url(https://i.pinimg.com/564x/58/d6/17/58d6171b8254771726c43d5de8889b08.jpg)',
           backgroundRepeat: 'no-repeat',
           backgroundColor: (t) =>
             t.palette.mode === 'light'
