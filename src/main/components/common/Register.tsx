@@ -115,7 +115,7 @@ const Register = () => {
                       <TextField
                         required
                         margin="normal"
-                        label="Username"
+                        label="Tên người dùng"
                         variant="outlined"
                         value={value}
                         onChange={onChange}
@@ -170,7 +170,7 @@ const Register = () => {
                       <TextField
                         required
                         margin="normal"
-                        label="Address"
+                        label="Địa chỉ"
                         variant="outlined"
                         value={value}
                         onChange={onChange}
@@ -196,7 +196,7 @@ const Register = () => {
                         required
                         margin="normal"
                         type="password"
-                        label="Password"
+                        label="Mật khẩu"
                         variant="outlined"
                         value={password}
                         onChange={(event) => {
@@ -227,7 +227,7 @@ const Register = () => {
                         required
                         margin="normal"
                         type="password"
-                        label="Confirm Password"
+                        label="Nhập lại mật khẩu"
                         variant="outlined"
                         value={value}
                         onChange={onChange}

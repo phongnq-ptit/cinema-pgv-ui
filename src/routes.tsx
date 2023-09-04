@@ -25,6 +25,9 @@ import ManageBranches from './main/screens/admin/manage_branches/ManageBranches'
 import CreateBranch from './main/screens/admin/manage_branches/CreateBranch';
 import EditUser from './main/screens/admin/manage_users/EditUser';
 import EditBranch from './main/screens/admin/manage_branches/EditBranch';
+import AdminProfile from './main/screens/admin/profile/AdminProfile';
+import ClientProfile from './main/screens/client/profile/ClientProfile';
+import BranchProfile from './main/screens/branch/profile/BranchProfile';
 
 const routes = [
   {
@@ -37,7 +40,7 @@ const routes = [
       {path: 'payment/successful', element: <AttentionPaymentSuccessful />},
       {path: 'tickets', element: <ManageTickets />},
       {path: 'tickets/:purchaseUuid', element: <PurchaseDetail />},
-      {path: 'profile', element: <Home />},
+      {path: 'profile', element: <ClientProfile />},
       {path: '404', element: <>404</>},
       {path: '', element: <Navigate to="/404" />},
       {path: '*', element: <Navigate to="/404" />},
@@ -57,7 +60,7 @@ const routes = [
       {path: 'movies/:movieUuid', element: <EditMovieScreen />},
       {path: 'movies/create', element: <CreateMovie />},
       {path: 'categories', element: <ManageCategory />},
-      {path: 'profile', element: <ManageMovies />},
+      {path: 'profile', element: <AdminProfile />},
       {path: '404', element: <>404</>},
       {path: '', element: <Navigate to="/404" />},
       {path: '*', element: <Navigate to="/404" />},
@@ -80,7 +83,7 @@ const routes = [
     children: [
       {path: 'movies', element: <SelectMovies />},
       {path: 'public-movies', element: <ManagePublicMovie />},
-      {path: 'profile', element: <Login />},
+      {path: 'profile', element: <BranchProfile />},
       {path: '404', element: <>404</>},
       {path: '', element: <Navigate to="/404" />},
       {path: '*', element: <Navigate to="/404" />},

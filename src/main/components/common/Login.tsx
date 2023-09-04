@@ -29,7 +29,7 @@ const Login = () => {
     await login({...data})
       .then((response) => {
         localStorage.setItem('login', JSON.stringify(response.data));
-        successSnackbar('Login successful!!');
+        successSnackbar('Đăng nhập thành công!!');
 
         const nextPath = getPathRoute(response.data.user.role);
 
@@ -137,7 +137,7 @@ const Login = () => {
                     required
                     margin="normal"
                     type="password"
-                    label="Password"
+                    label="Mật khẩu"
                     variant="outlined"
                     value={value}
                     onChange={onChange}
